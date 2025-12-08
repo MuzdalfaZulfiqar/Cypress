@@ -1,30 +1,132 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+// 1) Visit DevSta login page with desktop viewport
+Cypress.Commands.add('devstaVisitLogin', () => {
+  const baseUrl = Cypress.env('baseUrl') || 'https://devsta.vercel.app';
 
-Cypress.on('uncaught:exception', (err, runnable) => {
-  // returning false here prevents Cypress from failing the test
-  return false
-})
+  cy.visit(`${baseUrl}/login`);
+  cy.viewport(1440, 900); // same as your tests
+});
+
+// 2) Fill login form fields
+Cypress.Commands.add('devstaFillLoginForm', (email, password) => {
+  cy.get('input[name=email]').clear().type(email);
+  cy.get('input[name=password]').clear().type(password);
+});
+
+// 3) Click the login button
+Cypress.Commands.add('devstaSubmitLogin', () => {
+  cy.get('button[type=submit]').click();
+});
+
+// 4) Full login flow using given email & password
+Cypress.Commands.add('devstaLogin', (email, password) => {
+  cy.devstaVisitLogin();
+  cy.devstaFillLoginForm(email, password);
+  cy.devstaSubmitLogin();
+});
+
+// 5) Login with VALID credentials from env (cypress.env.json)
+Cypress.Commands.add('devstaLoginWithValidFixture', () => {
+  const email = Cypress.env('validEmail');
+  const password = Cypress.env('validPassword');
+
+  cy.devstaLogin(email, password);
+});
+
+// 6) Try all INVALID logins from fixture: LoginData.json (array)
+Cypress.Commands.add('devstaTryInvalidLogins', () => {
+  cy.fixture('LoginData').then((users) => {
+    users.forEach((user) => {
+      cy.devstaFillLoginForm(user.email, user.password);
+      cy.devstaSubmitLogin();
+      cy.contains('Invalid credentials', { timeout: 8000 }).should('be.visible');
+      cy.contains('button', 'Close').click();
+      cy.url().should('include', '/login');
+      cy.get('input[name=email]').clear();
+      cy.get('input[name=password]').clear();
+    });
+  });
+});
+
+
+/********************************
+ * COMMUNITY / DASHBOARD FLOW
+ ********************************/
+
+Cypress.Commands.add('devstaLoginToDashboard', () => {
+  const email = Cypress.env('validEmail');
+  const password = Cypress.env('validPassword');
+
+  cy.devstaVisitLogin();
+  cy.devstaFillLoginForm(email, password);
+  cy.devstaSubmitLogin();
+
+  // URL is enough here
+  cy.url({ timeout: 10000 }).should('include', '/dashboard');
+
+  // Just check it exists, not necessarily visible at that exact millisecond
+  cy.contains('Welcome', { timeout: 10000 }).should('exist');
+});
+
+
+Cypress.Commands.add('devstaOpenCommunityFromSidebar', () => {
+  // Click the left sidebar item "Community"
+  // (we don’t restrict to nav/aside anymore)
+  cy.contains('a, button, li, div, span', 'Community')
+    .first()
+    .click({ force: true });
+    cy.url({ timeout: 10000 }).should('include', '/community');
+    cy.contains('Filters', { timeout: 10000 }).should('be.visible');
+  
+});
+
+
+Cypress.Commands.add('devstaOpenCommunityTab', (tabName) => {
+  // Use case-insensitive regex for tab text
+  const tabRegex = new RegExp(tabName, 'i');
+
+  cy.contains('button, [role="tab"], a', tabRegex, { timeout: 10000 })
+    .click({ force: true });
+
+  // Light sanity check that something related to that tab is visible
+  if (/Explore/i.test(tabName)) {
+    cy.contains('Filters', { timeout: 10000 }).should('be.visible');
+  } else if (/Feed/i.test(tabName)) {
+    cy.contains(/Feed/i, { timeout: 10000 }).should('exist');
+  } else if (/Connections/i.test(tabName)) {
+    cy.contains(/Connections/i, { timeout: 10000 }).should('exist');
+  } else if (/Messaging/i.test(tabName)) {
+    cy.contains(/Messaging/i, { timeout: 10000 }).should('exist');
+  }
+});
+
+
+/********************************
+ * COMMUNITY – FEED HELPERS
+ ********************************/
+
+// Open Community → Feed tab
+Cypress.Commands.add('devstaOpenFeed', () => {
+  cy.devstaOpenCommunityTab('Feed');
+
+  cy.get('textarea[placeholder*="Share something with the community"]', {
+    timeout: 10000,
+  }).should('be.visible');
+});
+
+// Create a feed post and assert it appears in the list
+Cypress.Commands.add('devstaCreateFeedPost', (message) => {
+  cy.devstaOpenFeed();
+
+  // Type message in composer
+  cy.get('textarea[placeholder*="Share something with the community"]')
+    .clear()
+    .type(message);
+
+  // Post button becomes enabled → click
+  cy.contains('button', 'Post')
+    .should('not.be.disabled')
+    .click();
+
+  // Verify that the new post appears in the feed list
+  cy.contains(message, { timeout: 10000 }).should('be.visible');
+});

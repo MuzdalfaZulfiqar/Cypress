@@ -1,4 +1,3 @@
 [
-  { "email": "devsta_admin", "password": "SuperSecret123" },
   { "email": "wrong@example.com", "password": "wrongpass" }
 ]
