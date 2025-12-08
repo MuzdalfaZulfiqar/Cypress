@@ -1,8 +1,8 @@
 /// <reference types="cypress" />
-describe("DevSta Smoke Test", () => {
 
+describe("DevSta Smoke Test", () => {
   beforeEach(() => {
-    cy.visit(Cypress.env("baseUrl"));
+    cy.visit("/");
   });
 
   it("Loads the DevSta homepage", () => {
@@ -13,5 +13,4 @@ describe("DevSta Smoke Test", () => {
     cy.contains("Login").click();
     cy.url().should("include", "/login");
   });
-
 });
