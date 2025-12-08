@@ -1,4 +1,13 @@
-[
-  { "email": "devsta_admin", "password": "SuperSecret123" },
-  { "email": "wrong@example.com", "password": "wrongpass" }
-]
+
+{
+  "valid": {
+    "email": "muzdalfazulfiqar11@gmail.com",
+    "password": "muzdalfa"
+  },
+  "invalid": [
+    { "email": "wrong@example.com", "password": "Wrong123" },
+    { "email": "invalid@example.com", "password": "12345678" },
+    { "email": "test@test.com", "password": "password" }
+  ]
+}
+
