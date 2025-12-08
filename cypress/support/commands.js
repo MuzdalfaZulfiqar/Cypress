@@ -32,20 +32,34 @@ Cypress.Commands.add('devstaLoginWithValidFixture', () => {
   cy.devstaLogin(email, password);
 });
 
-// 6) Try all INVALID logins from fixture: LoginData.json (array)
+// 6) Try all INVALID logins from fixture: LoginData.json
 Cypress.Commands.add('devstaTryInvalidLogins', () => {
-  cy.fixture('LoginData').then((users) => {
-    users.forEach((user) => {
+  cy.fixture('LoginData').then((data) => {
+    // Support both shapes:
+    // 1) { invalid: [ ... ] }
+    // 2) [ ... ]  (just an array)
+    const invalidUsers = Array.isArray(data) ? data : data.invalid;
+
+    // Safety check – make sure we actually have some invalid users
+    expect(invalidUsers, 'invalid users in fixture').to.be.an('array').and.not.be.empty;
+
+    invalidUsers.forEach((user) => {
+      // fill form with invalid credentials
       cy.devstaFillLoginForm(user.email, user.password);
       cy.devstaSubmitLogin();
+
+      // wait for and assert error popup
       cy.contains('Invalid credentials', { timeout: 8000 }).should('be.visible');
-      cy.contains('button', 'Close').click();
+      cy.contains('button', 'Close').click({ force: true });
+
+      // still on login page, inputs visible for next iteration
       cy.url().should('include', '/login');
-      cy.get('input[name=email]').clear();
-      cy.get('input[name=password]').clear();
+      cy.get('input[name=email]').should('be.visible');
+      cy.get('input[name=password]').should('be.visible');
     });
   });
 });
+
 
 
 /********************************
