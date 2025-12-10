@@ -18,21 +18,21 @@ describe("Admin Panel – Stable Cypress Tests With Modal Handling", () => {
     cy.contains('a', 'Users').click();
     cy.get('tbody tr').should('have.length.greaterThan', 0);
 
-    // ===== DELETE FIRST USER =====
+    // ===== DELETE USER =====
     cy.get('tbody tr').last().within(() => {
       cy.get('button[title="Delete user"]').click();
     });
     // Confirm delete in modal
     cy.get('button').contains('Delete Forever').click();
 
-    // ===== BLOCK FIRST USER =====
+    // ===== BLOCK USER =====
     cy.get('tbody tr').last().within(() => {
       cy.get('button[title="Block user"]').click();
     });
     // Confirm block in modal
     cy.get('button').contains('Confirm').click();
 
-    // ===== UNBLOCK FIRST USER =====
+    // ===== UNBLOCK USER =====
     cy.get('tbody tr').last().within(() => {
       cy.get('button[title="Unblock user"]').click();
     });
@@ -43,7 +43,7 @@ describe("Admin Panel – Stable Cypress Tests With Modal Handling", () => {
     cy.contains('a', 'Posts').click();
     cy.get('tbody tr').should('have.length.greaterThan', 0);
 
-    // Delete first post
+    // Delete post
     cy.get('tbody tr').last().within(() => {
   cy.get('button[title="Delete"]').click(); // match your React button
 });

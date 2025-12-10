@@ -69,7 +69,7 @@ describe('DevSta Community – Data-driven Explore search using Excel', () => {
         const { keyword, expectedName } = row;
   
         cy.log(
-          `🔍 Searching for keyword: "${keyword}"` +
+          `Searching for keyword: "${keyword}"` +
             (expectedName ? ` → expecting: "${expectedName}"` : '')
         );
 
