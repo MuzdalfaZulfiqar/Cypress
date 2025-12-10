@@ -1,9 +1,6 @@
-// API mocking in Cypress to test announcements display on dashboard
-// and data-driven testing approach with array/object for announcements
 
 /// <reference types="cypress" />
 describe("Dashboard – Announcements Display Test", () => {
-  // Defining announcement data directly in the test (data-driven approach)
   const announcementsData = [
     {
       _id: "ann1",
@@ -29,13 +26,10 @@ describe("Dashboard – Announcements Display Test", () => {
   ];
 
   beforeEach(() => {
-    // 🔹 Intercept the announcements API and return data from array/object
     cy.intercept("GET", "/api/users/announcements", {
       statusCode: 200,
       body: announcementsData,
     }).as("getAnnouncements");
-
-    // 🔹 Login via existing fixture (loginData.json)
     cy.fixture("loginData").then((data) => {
       cy.visit("/login");
       cy.get("input[name=email]").type(data.valid.email);
@@ -43,8 +37,6 @@ describe("Dashboard – Announcements Display Test", () => {
       cy.get("button[type=submit]").click();
       cy.url({ timeout: 15000 }).should("include", "/dashboard");
     });
-
-    // Wait for the announcements API call to complete
     cy.wait("@getAnnouncements");
   });
 

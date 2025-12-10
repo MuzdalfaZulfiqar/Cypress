@@ -1,0 +1,4 @@
+email,password,expected
+wrong1@example.com,wrongpass,error
+wrong2@example.com,123456,error
+muzdalfazulfiqar11@gmail.com,muzdalfa,success
