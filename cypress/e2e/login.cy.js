@@ -1,4 +1,3 @@
-// Use of Cyress commands to test login functionality and also using fixtures for test data(JSON Fixture).
 
 /// <reference types="cypress" />
 
@@ -21,7 +20,7 @@ describe("DevSta Login Tests", () => {
       cy.wait(1000);
 
       cy.url().should("include", "/dashboard");
-      cy.contains("Welcome").should("be.visible"); // instead of Dashboard nav
+      cy.contains("Welcome").should("be.visible"); 
     });
   });
 
@@ -34,7 +33,7 @@ describe("DevSta Login Tests", () => {
         cy.wait(1000);
 
         cy.contains("Error!").should("be.visible");
-        cy.get("button").contains("Close").click({ force: true }); // close modal before next iteration
+        cy.get("button").contains("Close").click({ force: true }); 
       });
     });
   });
