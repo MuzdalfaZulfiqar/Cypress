@@ -2,6 +2,7 @@
 /// <reference types="cypress" />
 
 describe("Testing Profile - Edit Profile: Resume Upload", () => {
+    
     beforeEach(() => {
         cy.viewport(1440, 900);
 

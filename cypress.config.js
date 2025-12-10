@@ -4,18 +4,30 @@ const fs = require("fs");
 const path = require("path");
 const Papa = require("papaparse");
 const xlsx = require("xlsx");
-
+// const { addMatchImageSnapshotPlugin } = require('cypress-image-diff-js/dist/plugin');
+import { configureVisualRegression } from 'cypress-visual-regression'
 module.exports = defineConfig({
   e2e: {
     baseUrl: "https://devsta.vercel.app",
     chromeWebSecurity: false,
+    screenshotsFolder: './cypress/snapshots/actual',
 
     env: {
-      apiUrl: "https://devsta-backend.onrender.com"
+      apiUrl: "https://devsta-backend.onrender.com",
+      // SNAPSHOT_UPDATE: false
+      visualRegressionType:'regression',
+      visualRegressionBaseDirectory: 'cypress/snapshots/base',
+      visualRegressionDiffDirectory: 'cypress/snapshots/diff',
+      visualRegressionGenerateDiff: 'always',
+      visualRegressionFailSilently: true
     },
 
     setupNodeEvents(on, config) {
-      // 🔹 TASK: Parse CSV from fixtures
+    //  const { initPlugin } = require('cypress-plugin-snapshots/plugin');
+    //   initPlugin(on, config);
+
+    configureVisualRegression(on)
+      // TASK: Parse CSV from fixtures
       on("task", {
         parseCsv(fileName) {
           return new Promise((resolve, reject) => {
@@ -42,7 +54,7 @@ module.exports = defineConfig({
           });
         },
 
-        // 🔹 TASK: Parse Excel from fixtures (Sheet1)
+        // TASK: Parse Excel from fixtures (Sheet1)
         parseExcel(fileName) {
           try {
             const filePath = path.resolve(
