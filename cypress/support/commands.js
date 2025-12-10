@@ -35,9 +35,7 @@ Cypress.Commands.add('devstaLoginWithValidFixture', () => {
 // 6) Try all INVALID logins from fixture: LoginData.json
 Cypress.Commands.add('devstaTryInvalidLogins', () => {
   cy.fixture('LoginData').then((data) => {
-    // Support both shapes:
-    // 1) { invalid: [ ... ] }
-    // 2) [ ... ]  (just an array)
+
     const invalidUsers = Array.isArray(data) ? data : data.invalid;
 
     // Safety check – make sure we actually have some invalid users
@@ -145,34 +143,26 @@ Cypress.Commands.add('devstaCreateFeedPost', (message) => {
   cy.contains(message, { timeout: 10000 }).should('be.visible');
 });
 
-
-
-
-// ***********************************************
 // Token-based Auth (Captcha Bypass)
-// ***********************************************
+
 
 Cypress.Commands.add('devstaLoginWithToken', () => {
   const baseUrl = Cypress.env('baseUrl') || 'https://devsta.vercel.app';
 
-  // 🔐 JWT token – either from env or hardcoded fallback
   const token =
     Cypress.env('authToken') ||
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmU2ZjkxZTA3Y2ViZDZjZjI4MmEyZSIsImlhdCI6MTc2NTI2NTk3NywiZXhwIjoxNzY1MzUyMzc3fQ.L0Di999NSyHNVG-pF7tMx9mtW4jN-vrtw2OnfNSZKeU';
 
-  // 🧠 IMPORTANT:
-  // Change this key to whatever your frontend actually uses
-  // e.g. 'devsta-auth', 'devsta_token', 'authToken', etc.
   const STORAGE_KEY = 'devsta_token';
 
-  // ✅ Visit /dashboard, but inject token BEFORE the app loads
+  //  /dashboard, but inject token BEFORE the app loads
   cy.visit(`${baseUrl}/dashboard`, {
     onBeforeLoad(win) {
       win.localStorage.setItem(STORAGE_KEY, token);
     },
   });
 
-  // ✅ Now the route guard should consider you logged in
+  // route guard should consider you logged in
   cy.url({ timeout: 10000 }).should('include', '/dashboard');
   cy.contains('Welcome', { timeout: 10000 }).should('exist');
 });
