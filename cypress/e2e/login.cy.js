@@ -7,12 +7,12 @@ describe("DevSta Login Tests", () => {
     cy.viewport(1440, 900); // optional for desktop layout
   });
 
-  it("Login page loads correctly", () => {
+  it("Testing if Login page loads correctly", () => {
     cy.get("input[name=email]").should("exist");
     cy.get("input[name=password]").should("exist");
   });
 
-  it("Login with valid credentials", () => {
+  it("Testing the Login with valid credentials", () => {
     cy.fixture("loginData").then((data) => {
       cy.get("input[name=email]").type(data.valid.email);
       cy.get("input[name=password]").type(data.valid.password);
@@ -24,7 +24,7 @@ describe("DevSta Login Tests", () => {
     });
   });
 
-  it("Login fails with invalid credentials (fixture)", () => {
+  it("Testing Login fails with invalid credentials (fixture)", () => {
     cy.fixture("loginData").then((data) => {
       data.invalid.forEach((user) => {
         cy.get("input[name=email]").clear({ force: true }).type(user.email, { force: true });

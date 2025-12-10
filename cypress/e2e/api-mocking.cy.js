@@ -40,7 +40,8 @@ describe("Dashboard – Announcements Display Test", () => {
     cy.wait("@getAnnouncements");
   });
 
-  it("displays all announcements from the array/object", () => {
+  it("Displays all announcements from the array/object", () => {
+    // Iterate over announcementsData and assert each announcement is visible
     announcementsData.forEach((ann) => {
       cy.contains(ann.title).should("be.visible");
       cy.contains(ann.message).should("be.visible");
