@@ -1,7 +1,7 @@
 // Use of cypress commands to test Edit Profile functionality including resume upload
 /// <reference types="cypress" />
 
-describe("Profile - Edit Profile: Resume Upload & Add Education", () => {
+describe("Testing Profile - Edit Profile: Resume Upload", () => {
     beforeEach(() => {
         cy.viewport(1440, 900);
 
@@ -18,7 +18,7 @@ describe("Profile - Edit Profile: Resume Upload & Add Education", () => {
         });
     });
 
-    it("can upload resume and add education in Edit Profile", () => {
+    it("Testing if the user can replace resume", () => {
         cy.contains("Profile").click();
         cy.contains("button", "Edit Profile").click({ force: true });
 
