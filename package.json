@@ -13,6 +13,8 @@
     "cypress": "^15.7.0"
   },
   "devDependencies": {
-    "cypress-file-upload": "^5.0.8"
+    "cypress-file-upload": "^5.0.8",
+    "papaparse": "^5.5.3",
+    "xlsx": "^0.18.5"
   }
 }
