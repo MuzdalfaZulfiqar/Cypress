@@ -7,11 +7,13 @@ const xlsx = require("xlsx");
 // const { addMatchImageSnapshotPlugin } = require('cypress-image-diff-js/dist/plugin');
 import { configureVisualRegression } from 'cypress-visual-regression'
 module.exports = defineConfig({
+  projectId:"nppwe1",
   e2e: {
     baseUrl: "https://devsta.vercel.app",
+    
     chromeWebSecurity: false,
     screenshotsFolder: './cypress/snapshots/actual',
-
+//5daecf8f-e51e-4715-9537-487f2d7b7d17
     env: {
       apiUrl: "https://devsta-backend.onrender.com",
       // SNAPSHOT_UPDATE: false
