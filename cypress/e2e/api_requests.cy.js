@@ -49,7 +49,7 @@ describe('DevSta API – Sending API requests with cy.request()', () => {
     }).then((resp) => {
       expect(resp.status).to.eq(200);
       expect(resp.body).to.have.property('token');
-      cy.log('🔐 Login API response:', JSON.stringify(resp.body));
+      cy.log('Login API response:', JSON.stringify(resp.body));
     });
   });
 
@@ -77,7 +77,7 @@ describe('DevSta API – Sending API requests with cy.request()', () => {
         expect(resp.body.name).to.be.a('string').and.not.be.empty;
       }
 
-      cy.log('👤 /api/users/me response:', JSON.stringify(resp.body));
+      cy.log('/api/users/me response:', JSON.stringify(resp.body));
     });
   });
 
@@ -110,7 +110,7 @@ describe('DevSta API – Sending API requests with cy.request()', () => {
         (body) => Array.isArray(body) || typeof body === 'object'
       );
 
-      cy.log('🔗 /api/connections response:', JSON.stringify(resp.body));
+      cy.log('/api/connections response:', JSON.stringify(resp.body));
     });
   });
 

@@ -8,9 +8,7 @@ describe("Community Connections – Cypress Studio Test", () => {
   });
 
   it("Community Filters working (recorded via Studio)", () => {
-
     const email = Cypress.env("validEmail")
-
     const password = Cypress.env("validPassword");
 
 

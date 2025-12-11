@@ -97,11 +97,11 @@ describe('DevSta Data-Driven Login – CSV file', () => {
       cy.wait(2000);
     });
   
-    // 3️⃣ Clean up session at the end – shows you can reset state
+    // Clean up session at the end – shows you can reset state
     it('clears auth at the end of CSV-driven tests', () => {
       cy.clearCookies();
       cy.clearLocalStorage();
-      cy.log('🧹 Cleared cookies & localStorage after CSV tests');
+      cy.log('Cleared cookies & localStorage after CSV tests');
     });
   });
   
