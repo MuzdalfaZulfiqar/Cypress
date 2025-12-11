@@ -7,7 +7,7 @@ const xlsx = require("xlsx");
 // const { addMatchImageSnapshotPlugin } = require('cypress-image-diff-js/dist/plugin');
 import { configureVisualRegression } from 'cypress-visual-regression'
 module.exports = defineConfig({
-  projectId:"nppwe1",
+  projectId:'dz3nu9',
   e2e: {
     baseUrl: "https://devsta.vercel.app",
     

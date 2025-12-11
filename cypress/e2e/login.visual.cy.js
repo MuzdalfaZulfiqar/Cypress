@@ -10,7 +10,7 @@ describe("DevSta Login Tests + Visual Regression", () => {
     cy.get("input[name=email]").should("exist");
     cy.get("input[name=password]").should("exist");
 
-    // 🔹 Visual snapshot using cypress-visual-regression
+    // Visual snapshot using cypress-visual-regression
     cy.compareSnapshot("login-page");
   });
 
@@ -25,7 +25,7 @@ describe("DevSta Login Tests + Visual Regression", () => {
       cy.contains("Welcome").should("be.visible");
       cy.wait(1000);
 
-      // 🔹 Visual snapshot of dashboard after login
+      // Visual snapshot of dashboard after login
       cy.compareSnapshot("dashboard-after-login");
     });
   });
