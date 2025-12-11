@@ -10,8 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "cypress": "^15.7.0",
-    "cypress-plugin-snapshots": "^1.4.4"
+    "cypress": "^15.7.0"
   },
   "devDependencies": {
     "@simonsmith/cypress-image-snapshot": "^10.0.3",
